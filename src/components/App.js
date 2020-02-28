@@ -13,7 +13,8 @@ export default class App extends Component {
     this.state = {
       view: 'home',
       loading: true,
-      data: []
+      formattedLabels: [],
+      formattedData: [],
     }
   }
 
@@ -22,19 +23,57 @@ export default class App extends Component {
   }
 
   getData() {
-    return axios('https://api.myjson.com/bins/bxobk').then((response) => {
+    axios('https://api.myjson.com/bins/bxobk').then(response => {
       this.setState({
         loading: false,
-        data: response.data
+        formattedLabels: this.formatLabels(response.data),
+        formattedData: this.formatDataSets(response.data)
       })
     })
   }
 
+  formatLabels(data) {
+    let labels = []
+    for (let i = 1; i < data[0].length; i++) {
+      labels.push(data[0][i][0])
+    }
+    return labels
+  }
+  
+  formatNumbers(data, i) {
+    let numbers = data[0].map(dataSet => dataSet[i])
+    numbers.shift()
+    return numbers
+  }
+
+  formatDataSets(data) {
+    let datasets = data[0][0].map((dataSet, i) => {
+      let r = Math.random()*200
+      let g = Math.random()*200
+      let b = Math.random()*200
+      return {
+        label: dataSet,
+        backgroundColor: `rgba(${r},${g},${b},0.2)`,
+        borderColor: `rgba(${r},${g},${b},1)`,
+        borderWidth: 1,
+        hoverBackgroundColor: `rgba(${r},${g},${b},0.4)`,
+        hoverBorderColor: `rgba(${r},${g},${b},1)`,
+        data: this.formatNumbers(data, i)
+      }
+    })
+    datasets.shift()
+    return datasets
+  }
+
   views() {
     return {
-      home: <DataVisualization data={this.state.data}
+      home: <DataVisualization
+          formattedLabels={this.state.formattedLabels}
+          formattedData={this.state.formattedData}
       />,
       keySummaryStatistics: <KeySummaryStatistics
+          formattedLabels={this.state.formattedLabels}
+          formattedData={this.state.formattedData}
       />
     }
   }
