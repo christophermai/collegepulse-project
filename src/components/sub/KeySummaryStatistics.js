@@ -13,7 +13,10 @@ export default class KeySummaryStatistics extends Component {
   render() {
     return(
       <div>
-        <h1>Stats</h1>
+        <h1>Statistics</h1>
+        //Most/least popular as of most recent data
+        //Rising star in popularity - largest growth
+        //Candidate to watch out for - fastest growth
       </div>
     )
   }

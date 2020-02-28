@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Grid, Menu, Button, Loader, MenuItem } from 'semantic-ui-react'
+import { Grid, Menu, Button, Loader } from 'semantic-ui-react'
+import axios from 'axios'
 
 import DataVisualization from './sub/DataVisualization.js'
 import KeySummaryStatistics from './sub/KeySummaryStatistics.js'
@@ -11,35 +12,27 @@ export default class App extends Component {
     super(props)
     this.state = {
       view: 'home',
-      loading: false,
-      data: [
-        [
-          [
-            "All",
-            "Bernie Sanders",
-            "Joe Biden"
-          ],
-          [
-            "26-March",
-            "33",
-            "22"
-          ],
-          [
-            "02-April",
-            "34",
-            "23"
-          ]
-        ]
-      ]
+      loading: true,
+      data: []
     }
   }
 
   componentDidMount() {
+    this.getData()
+  }
+
+  getData() {
+    return axios('https://api.myjson.com/bins/bxobk').then((response) => {
+      this.setState({
+        loading: false,
+        data: response.data
+      })
+    })
   }
 
   views() {
     return {
-      home: <DataVisualization
+      home: <DataVisualization data={this.state.data}
       />,
       keySummaryStatistics: <KeySummaryStatistics
       />
@@ -55,7 +48,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { loading, view } = this.state
+    const { view, loading } = this.state
     const isButtonSelected = (view, viewName) => {
       return view === viewName ? 'selected' : null
     }
@@ -79,25 +72,21 @@ export default class App extends Component {
               Key Summary Statistics
             </Menu.Item>
             <Menu.Item position='right'>
-              <Button color={'teal'} floated='right' onClick={() => {
-              
-              }}>
+              <Button color={'teal'} floated='right' onClick={() => this.getData()}>
                 Refresh Data
               </Button>
             </Menu.Item>
           </Menu>
         </div>
-
-        {loading ?
-          <Loader/>
-          :
-          <div className='dashboard'>
-            <Grid>
+        {
+          loading ?
+            <Loader />
+            :
+            <div className='dashboard'>
               {
                 this.views()[view]
               }
-            </Grid>
-          </div>
+            </div>
         }
       </div>
     )

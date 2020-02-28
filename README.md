@@ -27,9 +27,15 @@ I chose React because I like React and I wanted to practice my React skills a bi
 In my React app, I could not use D3 because
 1) D3 manipulates the real DOM
 3) Tried using react-d3-library, but it uses a babel plugin my version of babel does not recognize.
+I decided to use react-char-js2 based on Chart.js because I've used it before without any issues.
+
+However, there are drawbacks with using Chart.js with this dataset.
+1) Readability: If the dataset gets large (more candidates or larger timescale), the bars get very thin, cluttered, and hard to read, but thankfully you can filter the bars so that helps mitigate this issue a bit.
+  D3.js would solve this better by having a bubble chart that renders a good sized pie chart for each timeframe.
 
 
 #Testing our Results
+1) I Console.logged the raw data and console.logged the data after it had been formatted and ready to be fed into the data visualization library. Then I compared the two to ensure the data displayed is as intended.
 
 #Future Ideas
 

@@ -10,7 +10,10 @@
   "author": "Christopher Mai",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
+    "chart.js": "^2.9.3",
     "react": "^16.13.0",
+    "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.0",
     "semantic-ui-react": "^0.88.2"
   },
