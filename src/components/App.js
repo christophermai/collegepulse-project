@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Menu, Button, Loader } from 'semantic-ui-react'
+import { Menu, Button, Loader } from 'semantic-ui-react'
 import axios from 'axios'
 
 import DataVisualization from './sub/DataVisualization.js'
@@ -62,6 +62,7 @@ export default class App extends Component {
       }
     })
     datasets.shift()
+    console.log(datasets)
     return datasets
   }
 

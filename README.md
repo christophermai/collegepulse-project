@@ -35,8 +35,10 @@ However, there are drawbacks with using Chart.js with this dataset.
 
 
 #Testing our Results
-1) I Console.logged the raw data and console.logged the data after it had been formatted and ready to be fed into the data visualization library. Then I compared the two to ensure the data displayed is as intended.
+1) I console.logged the raw data and console.logged the data after it had been formatted and ready to be fed into the data visualization library. Then I compared the two to ensure the data is displayed in the graph correctly.
 
 #Future Ideas
+1) Key Summary Statistics is always welcome to more ways to interpret the data. Styling is also far from complete here.
 
 #Getting Ready for Production
+1) The bundle.js from webpack is above the recommended size. I would look into implementing code-splitting features of webpack to lazy load the application.
