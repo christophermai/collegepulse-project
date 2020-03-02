@@ -6,9 +6,9 @@
 ## Setup
 1. clone repository
 2. go into the cloned repo and run the following npm commands:
-3. $npm install
-4. $npm run build
-5. $npm run start
+3. `npm install`
+4. `npm run build`
+5. `npm run start`
 6. A new browser window should open the app at localhost:8080
 
 # Code Structure
