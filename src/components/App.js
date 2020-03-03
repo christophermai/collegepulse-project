@@ -119,7 +119,7 @@ export default class App extends Component {
         </div>
         {
           loading ?
-            <Loader />
+            <Loader active />
             :
             <div className='dashboard'>
               {
