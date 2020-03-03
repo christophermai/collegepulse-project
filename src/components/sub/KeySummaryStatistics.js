@@ -1,19 +1,31 @@
 import React from 'react'
 import Tooltip from './Tooltip'
 
-import './style.css'
-
 export default function KeySummaryStatistics(props) {
+  const MONTHS = {
+    'January': 0,
+    'February': 1,
+    'March': 2,
+    'April': 3,
+    'May': 4,
+    'June': 5,
+    'July': 6,
+    'August': 7,
+    'September': 8,
+    'October': 9,
+    'November': 10,
+    'December': 11
+  }
   const labels = props.formattedLabels
   const datasets = props.formattedData
 
   function findMostRecentlyPopular() {
-    let mostRecentIdx = labels.length-1
+    //find the candidate with the highest polling value on the most recently sampled date
+    let mostRecentPoll = labels.length-1
     let highestPopularity = 0
     let mostPopularIdx = 0
-    //for each dataset, find the one with the highest data[mostRecentIdx]
     for (let i = 0; i < datasets.length; i++) {
-      let currentPopularity = datasets[i].data[mostRecentIdx]
+      let currentPopularity = datasets[i].data[mostRecentPoll]
       if (currentPopularity > highestPopularity) {
         highestPopularity = currentPopularity
         mostPopularIdx = i
@@ -27,7 +39,6 @@ export default function KeySummaryStatistics(props) {
     //find the candidate with the largest positive difference between their most recent polling and least valued polling.
     let largestDifference = 0
     let largestDifferenceIdx = 0
-    let mostRecentIdx = labels.length-1
     for (let i = 0; i < datasets.length; i++) { //each candidate
       let leastPoll = Number.MAX_SAFE_INTEGER
       for (let j = 0; j < datasets[i].data.length - 1; j++) {
@@ -36,7 +47,14 @@ export default function KeySummaryStatistics(props) {
         }
       }
 
-      let difference = datasets[i].data[mostRecentIdx] - leastPoll
+      let mostRecentPoll = labels.length - 1
+      while (datasets[i].data[mostRecentPoll] === NaN) {
+        if (datasets[i].data[mostRecentPoll] === NaN) {
+          mostRecentPoll--
+        }
+      }
+
+      let difference = datasets[i].data[mostRecentPoll] - leastPoll
       if (difference > largestDifference) {
         largestDifference = difference
         largestDifferenceIdx = i
@@ -47,7 +65,45 @@ export default function KeySummaryStatistics(props) {
   }
 
   function findFastestGrowth() {
-    //find the candidate with the largest average slope in polling value over time.
+    //find the candidate with the largest overall slope in polling value over time.
+    //slope = rise / run
+    //rise = mostRecentPoll - oldestPoll
+    //run = mostRecentDate - oldestDate
+    let fastestGrowth = 0
+    let fastestGrowthIdx = 0
+    for (let i = 0; i < datasets.length; i++) {
+      let mostRecentPoll = labels.length - 1
+      let oldestPoll = 0
+      while (datasets[i].data[mostRecentPoll] === NaN || datasets[i].data[oldestPoll] === NaN) {
+        if (datasets[i].data[mostRecentPoll] === NaN) {
+          mostRecentPoll--
+        }
+        if (datasets[i].data[oldestPoll] === NaN) {
+          oldestPoll++
+        }
+      }
+
+      let rise = datasets[i].data[mostRecentPoll] - datasets[i].data[oldestPoll]
+
+      let dateDay1 = labels[oldestPoll].substring(0, 2)
+      let dateMonth1 = labels[oldestPoll].substring(3)
+      let date1 = new Date(2019, MONTHS[dateMonth1], dateDay1)
+      let dateDay2 = labels[mostRecentPoll].substring(0, 2)
+      let dateMonth2 = labels[mostRecentPoll].substring(3)
+      let date2 = new Date(2019, MONTHS[dateMonth2], dateDay2)
+      let run = dateDiffDays(date1, date2)
+      let growth = rise / run
+      if (growth > fastestGrowth) {
+        fastestGrowth = growth
+        fastestGrowthIdx = i
+      }
+    }
+
+    return datasets[fastestGrowthIdx].label
+  }
+
+  function dateDiffDays(date1, date2) { //date1 = older date, date2 = newer date
+    return (date2.getTime() - date1.getTime()) / (1000 * 3600 * 24)
   }
 
   return (
@@ -73,6 +129,7 @@ export default function KeySummaryStatistics(props) {
           <Tooltip content={'Fastest growth on average over the time range'} />
         </span>
       </h3>
+      <p>{findFastestGrowth()}</p>
     </div>
   )
 }

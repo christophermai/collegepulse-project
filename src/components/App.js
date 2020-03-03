@@ -62,7 +62,6 @@ export default class App extends Component {
       }
     })
     datasets.shift()
-    console.log(datasets)
     return datasets
   }
 

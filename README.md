@@ -39,6 +39,7 @@ However, there are drawbacks with using Chart.js with this dataset.
 
 # Future Ideas
 1. Key Summary Statistics is always welcome to more ways to interpret the data. Styling is also far from complete here.
+2. Calculating different statistics in Key Summary Statistics may reuse intermediate calculation steps. We can find where these duplicated calculations are and save them for other statistics to use (ie. calculating the indices for a candidate's most recent valid poll and oldest valid poll, which we used to find fastest and largest growth)
 
 # Getting Ready for Production
 - The bundle.js from webpack is above the recommended size. I would look into implementing code-splitting features of webpack to lazy load the application.
