@@ -1,3 +1,5 @@
+# CollegePulse Data Visualization Project - by Christopher Mai
+
 # Getting Started
 
 ## Make sure these are installed
